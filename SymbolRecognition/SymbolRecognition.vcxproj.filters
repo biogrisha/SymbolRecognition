@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\SuperInt">
+      <UniqueIdentifier>{f19549d3-85ee-4b0f-9971-82649d358721}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SymbolRecognition.cpp">
@@ -60,7 +63,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SuperInt.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\SuperInt</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
