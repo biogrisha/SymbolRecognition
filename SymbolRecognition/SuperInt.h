@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <algorithm>
 #include <iostream>
 #include <math.h>
 class SuperInt
@@ -158,9 +159,7 @@ public:
 						res.IntBits[i] = 0;
 					}
 					
-				}
-
-				if (biggest > smallest)
+				}else if (biggest > smallest)
 				{
 					if (remainder)
 					{
@@ -185,6 +184,19 @@ public:
 						remainder = 1;
 					}
 				}
+				else if(biggest == smallest)
+				{
+					if (remainder)
+					{
+						res.IntBits[i] = 1;
+						remainder = 1;
+					}
+					else
+					{
+						res.IntBits[i] = 0;
+						remainder = 1;
+					}
+				}
 
 				if (res.IntBits[i] == 1)
 				{
@@ -197,6 +209,116 @@ public:
 		//0
 		//1
 		//0 rem 1
+	}
+
+	void Decr(const SuperInt& b)
+	{
+		bool biggest = 0;
+		bool smallest = 0;
+
+		int bSize = b.size;
+		int maxSize = biggestPos > b.biggestPos ? biggestPos : b.biggestPos;
+		maxSize ++;
+		bool el1 = false;
+		bool el2 = false;
+		bool sum = 0;
+		bool remainder = 0;
+		bool remainderTemp = 0;
+		int bBigger = Compare(b);
+
+		if (bBigger < 0)
+		{
+			for (int i = 0; i < maxSize; i++)
+			{
+				if (i >= size)
+				{
+					el1 = 0;
+				}
+				else
+				{
+					el1 = IntBits[i];
+				}
+
+				if (i >= bSize)
+				{
+					el2 = 0;
+				}
+				else
+				{
+					el2 = b.IntBits[i];
+				}
+
+				if (bBigger == 1)
+				{
+					biggest = el2;
+					smallest = el1;
+				}
+				else
+				{
+					biggest = el1;
+					smallest = el2;
+				}
+
+
+				if (!(biggest || smallest))
+				{
+					if (remainder)
+					{
+						IntBits[i] = 1;
+					}
+					else
+					{
+						IntBits[i] = 0;
+					}
+
+				}
+				else if (biggest > smallest)
+				{
+					if (remainder)
+					{
+						IntBits[i] = 0;
+						remainder = 0;
+					}
+					else
+					{
+						IntBits[i] = 1;
+					}
+				}
+				else if (biggest < smallest)
+				{
+					if (remainder)
+					{
+						IntBits[i] = 0;
+						remainder = 1;
+					}
+					else
+					{
+						IntBits[i] = 1;
+						remainder = 1;
+					}
+				}
+				else if (biggest == smallest)
+				{
+					if (remainder)
+					{
+						IntBits[i] = 1;
+						remainder = 1;
+					}
+					else
+					{
+						IntBits[i] = 0;
+						remainder = 1;
+					}
+				}
+
+				if (IntBits[i] == 1)
+				{
+					biggestPos = i;
+				}
+			}
+		}
+		
+		std::fill(IntBits.begin() + biggestPos+1, IntBits.begin() + size, false);
 	}
 
 	SuperInt Mult(const SuperInt& b)
@@ -234,6 +356,10 @@ public:
 		}
 
 		return res;
+	}
+
+	SuperInt Div(const SuperInt& b)
+	{
 	}
 
 	int Compare(const SuperInt& b)
