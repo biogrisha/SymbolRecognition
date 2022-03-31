@@ -362,6 +362,7 @@ public:
 		if (!res.IntBits.back())
 		{
 			res.IntBits.erase(res.IntBits.begin() + res.biggestPos+1, res.IntBits.end()-1);
+			res.size -= res.size - (res.biggestPos+1);
 		}
 		return res;
 	}

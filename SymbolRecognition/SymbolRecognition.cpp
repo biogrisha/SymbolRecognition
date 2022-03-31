@@ -236,15 +236,21 @@ int main(int argc, char** argv)
 {
     int i = 0;
     SuperInt s1(400, 3);
-    SuperInt s2(400, i);
+    SuperInt s2(400, 3);
 
 
     SuperInt s3(5, 3);
     while (true)
     {
         cin >> i;
-        
-        s3 = s3.Mult(s1);
+        if (i == 1)
+        {
+            s3 = s3.Mult(s1);
+        }
+        else
+        {
+            s3 = s3.Div(s2);
+        }
         s3.PrintBinary();
         cout << endl;
     }
