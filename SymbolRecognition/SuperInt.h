@@ -194,7 +194,7 @@ public:
 					else
 					{
 						res.IntBits[i] = 0;
-						remainder = 1;
+						remainder = 0;
 					}
 				}
 
@@ -307,7 +307,7 @@ public:
 					else
 					{
 						IntBits[i] = 0;
-						remainder = 1;
+						remainder = 0;
 					}
 				}
 
@@ -316,6 +316,10 @@ public:
 					biggestPos = i;
 				}
 			}
+		}
+		else if (bBigger == 0)
+		{
+			std::fill(IntBits.begin(), IntBits.begin() + size, false);
 		}
 		
 		std::fill(IntBits.begin() + biggestPos+1, IntBits.begin() + size, false);
@@ -367,28 +371,40 @@ public:
 			retSize = 1;
 		}
 		SuperInt ret(retSize+1, 0);
-		b.IntBits.insert(b.IntBits.begin(), retSize, false);
-		if (bBigger < 0)
+		SuperInt zero(2, 0);
+		if (b > zero)
 		{
-			SuperInt zero(2, 0);
-			int i = 0;
-			while(*this>zero)
+			ret.biggestPos = 0;
+			b.IntBits.insert(b.IntBits.begin(), retSize, false);
+			b.biggestPos += retSize;
+			if (bBigger < 0)
 			{
-				if (*this > b)
+				int i = 0;
+				while (retSize>=i)
 				{
-					ret.IntBits[i] = 1;
-					Decr(b);
+					bBigger = Compare(b);
+					if (bBigger <= 0)
+					{
+						ret.IntBits[retSize - i] = 1;
+						Decr(b);
+						if (ret.biggestPos == 0)
+						{
+							ret.biggestPos = retSize - i;
+						}
+					}
+					else
+					{
+						ret.IntBits[retSize - i] = 0;
+					}
 					b.IntBits.erase(b.IntBits.begin());
+					b.biggestPos--;
+					i++;
 				}
-				else
-				{
-					ret.IntBits[i] = 0;
-				}
-				i++;
 			}
-		}else if(bBigger == 0)
-		{
-			ret.IntBits[0] = 1;
+			else if (bBigger == 0)
+			{
+				ret.IntBits[0] = 1;
+			}
 		}
 		return ret;
 	}
