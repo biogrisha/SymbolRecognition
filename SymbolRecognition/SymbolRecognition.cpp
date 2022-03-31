@@ -234,32 +234,20 @@ void init()
 }
 int main(int argc, char** argv)
 {
-    
-    
-    //SuperInt s_2(20, 5);
-    //s_2.PrintDecimal();
-    //cout << endl;
-    //SuperInt s_1(20, 255);
-    //s_1.PrintDecimal();
-    //cout << endl;
-    //s_1.Decr(s_2);
-    //s_1.PrintDecimal();
+    int i = 0;
+    SuperInt s1(400, 3);
+    SuperInt s2(400, i);
 
 
-    SuperInt s1(400, 100000);
-    SuperInt s2(400, 100000);
+    SuperInt s3(5, 3);
+    while (true)
+    {
+        cin >> i;
+        
+        s3 = s3.Mult(s1);
+        s3.PrintBinary();
+        cout << endl;
+    }
 
-    s1.PrintDecimal();
-    cout << endl;
-    s2.PrintDecimal();
-    cout << endl;
-
-    /*s1.Decr(s2);
-    cout << endl;
-
-    s1.PrintBinary();*/
-
-    SuperInt s3 = s1.Mult(s2);
-    s3.PrintDecimal();
 
 }

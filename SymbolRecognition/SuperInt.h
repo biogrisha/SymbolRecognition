@@ -359,6 +359,10 @@ public:
 			}
 		}
 
+		if (!res.IntBits.back())
+		{
+			res.IntBits.erase(res.IntBits.begin() + res.biggestPos+1, res.IntBits.end()-1);
+		}
 		return res;
 	}
 
@@ -377,16 +381,18 @@ public:
 			ret.biggestPos = 0;
 			b.IntBits.insert(b.IntBits.begin(), retSize, false);
 			b.biggestPos += retSize;
+			SuperInt temp = *this;
+
 			if (bBigger < 0)
 			{
 				int i = 0;
 				while (retSize>=i)
 				{
-					bBigger = Compare(b);
+					bBigger = temp.Compare(b);
 					if (bBigger <= 0)
 					{
 						ret.IntBits[retSize - i] = 1;
-						Decr(b);
+						temp.Decr(b);
 						if (ret.biggestPos == 0)
 						{
 							ret.biggestPos = retSize - i;
