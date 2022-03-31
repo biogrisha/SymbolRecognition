@@ -225,7 +225,7 @@ public:
 		bool remainder = 0;
 		bool remainderTemp = 0;
 		int bBigger = Compare(b);
-
+		biggestPos = 0;
 		if (bBigger < 0)
 		{
 			for (int i = 0; i < maxSize; i++)
@@ -358,8 +358,39 @@ public:
 		return res;
 	}
 
-	SuperInt Div(const SuperInt& b)
+	SuperInt Div(SuperInt b)
 	{
+		int bBigger = Compare(b);
+		int retSize = biggestPos - b.biggestPos;
+		if (retSize < 1)
+		{
+			retSize = 1;
+		}
+		SuperInt ret(retSize+1, 0);
+		b.IntBits.insert(b.IntBits.begin(), retSize, false);
+		if (bBigger < 0)
+		{
+			SuperInt zero(2, 0);
+			int i = 0;
+			while(*this>zero)
+			{
+				if (*this > b)
+				{
+					ret.IntBits[i] = 1;
+					Decr(b);
+					b.IntBits.erase(b.IntBits.begin());
+				}
+				else
+				{
+					ret.IntBits[i] = 0;
+				}
+				i++;
+			}
+		}else if(bBigger == 0)
+		{
+			ret.IntBits[0] = 1;
+		}
+		return ret;
 	}
 
 	int Compare(const SuperInt& b)

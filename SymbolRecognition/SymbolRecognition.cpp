@@ -236,14 +236,14 @@ int main(int argc, char** argv)
 {
     
     
-    SuperInt s_2(20, 255);
+    SuperInt s_2(20, 5);
     s_2.PrintDecimal();
     cout << endl;
-    SuperInt s_1(20, 356);
+    SuperInt s_1(20, 255);
     s_1.PrintDecimal();
     cout << endl;
-    s_1.Decr(s_2);
-    s_1.PrintDecimal();
+    SuperInt s_3 = s_1.Div(s_2);
+    s_3.PrintDecimal();
     cout << endl;
 
 }
