@@ -234,13 +234,15 @@ void init()
 }
 int main(int argc, char** argv)
 {
-    SuperInt s_1(100, 3211111);
+    SuperInt s_1(234, 15);
     s_1.PrintDecimal();
     cout << endl;
-    SuperInt s_2(100, 93);
+    SuperInt s_2(100, 15);
     s_2.PrintDecimal();
     cout << endl;
-    SuperInt s_3 = s_1.Diff(s_2);
+    SuperInt s_3 = s_1.Mult(s_2);
     s_3.PrintDecimal();
+    cout << endl;
+    cout << (s_2 > s_1);
 
 }

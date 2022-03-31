@@ -15,6 +15,10 @@ public:
 		{
 			DivideWRemainder(initValue,2, initValue, remainder);
 			IntBits[i] = remainder;
+			if (remainder == 1)
+			{
+				biggestPos = i;
+			}
 			i++;
 		}
 	}
@@ -23,7 +27,8 @@ public:
 	{
 		
 		int bSize = b.size;
-		int maxSize = size < bSize ? bSize : size;
+		int maxSize = biggestPos > b.biggestPos ? biggestPos : b.biggestPos;
+		maxSize+=2;
 
 		SuperInt res(maxSize,0);
 		bool el1 = false;
@@ -77,6 +82,11 @@ public:
 				remainder = 1;
 
 			}
+
+			if (res.IntBits[i] == 1)
+			{
+				res.biggestPos = i;
+			}
 			//rem = 1
 			//0
 			//0
@@ -93,45 +103,16 @@ public:
 		bool smallest = 0;
 
 		int bSize = b.size;
-		int maxSize = size < bSize ? bSize : size;
-
+		int maxSize = biggestPos > b.biggestPos ? biggestPos : b.biggestPos;
+		maxSize += 2;
 		SuperInt res(maxSize, 0);
 		bool el1 = false;
 		bool el2 = false;
 		bool sum = 0;
 		bool remainder = 0;
 		bool remainderTemp = 0;
-		int bBigger = 0;
-		for (int i = maxSize-1; i >=0; i--)
-		{
-			if (i >= size)
-			{
-				el1 = 0;
-			}
-			else
-			{
-				el1 = IntBits[i];
-			}
-
-			if (i >= bSize)
-			{
-				el2 = 0;
-			}
-			else
-			{
-				el2 = b.IntBits[i];
-			}
-
-			if (el2 > el1)
-			{
-				bBigger = 1;
-				break;
-			}else if(el2 < el1)
-			{
-				bBigger = -1;
-				break;
-			}
-		}
+		int bBigger = Compare(b);
+		
 		if (bBigger != 0)
 		{
 			for (int i = 0; i < maxSize; i++)
@@ -205,7 +186,10 @@ public:
 					}
 				}
 
-
+				if (res.IntBits[i] == 1)
+				{
+					res.biggestPos = i;
+				}
 			}
 		}
 		return res;
@@ -213,6 +197,76 @@ public:
 		//0
 		//1
 		//0 rem 1
+	}
+
+	SuperInt Mult(const SuperInt& b)
+	{
+
+		int maxSize = biggestPos > b.biggestPos ? biggestPos : b.biggestPos;
+		maxSize++;
+		maxSize *= 2;
+		SuperInt res(maxSize, 0);
+		std::vector<unsigned int> tempRes(maxSize, 0);
+		for (int i = 0; i <= b.biggestPos; i++)
+		{
+			if (b.IntBits[i])
+			{
+				for (int j = 0; j <= biggestPos; j++)
+				{
+					tempRes[j + i] += IntBits[j];
+				}
+			}
+		}
+
+		int bit = 0;
+		int remainder = 0;
+
+		for (int i = 0; i < maxSize; i++)
+		{
+			remainder += tempRes[i];
+			bit = remainder % 2;
+			res.IntBits[i] = bit;
+			remainder = (remainder - bit) / 2;
+			if (bit == 1)
+			{
+				res.biggestPos = i;
+			}
+		}
+
+		return res;
+	}
+
+	int Compare(const SuperInt& b)
+	{
+		int res = 0;
+		if (b.biggestPos > biggestPos)
+		{
+			res = 1;
+		}
+		else if (b.biggestPos < biggestPos)
+		{
+			res = -1;
+		}
+		else
+		{
+			for (int i = biggestPos; i >= 0; i--)
+			{
+				
+
+				if (b.IntBits[i] > IntBits[i])
+				{
+					res = 1;
+					break;
+				}
+				else if (b.IntBits[i] < IntBits[i])
+				{
+					res = -1;
+					break;
+				}
+			}
+		}
+		
+		return res;
 	}
 
 	void PrintBinary()
@@ -240,9 +294,28 @@ public:
 		std::cout << sum;
 	}
 
+
+	bool operator>(const SuperInt& b)
+	{
+		bool res = false;
+		int compRes = Compare(b);
+		switch (compRes)
+		{
+		case -1:
+			res = true;
+			break;
+		case 1:
+			res = false;
+			break;
+		default:
+			break;
+		}
+		return res;
+	}
 private:
 	std::vector<bool> IntBits;
 	int size;
+	int biggestPos;
 	void DivideWRemainder(int dividend, int divisor, int& quotient, int& remainder)
 	{
 		quotient = dividend / divisor;
