@@ -382,6 +382,7 @@ public:
 			ret.biggestPos = 0;
 			b.IntBits.insert(b.IntBits.begin(), retSize, false);
 			b.biggestPos += retSize;
+			b.size += retSize;
 			SuperInt temp = *this;
 
 			if (bBigger < 0)
