@@ -126,6 +126,8 @@ SuperInt GetFuncRes(SuperInt x, SuperInt tolerance, int polDeg)
     SuperInt res(2,1);
     int sz = coefs.size();
     int i2 = 0;
+    int leftComp = 0;
+    int rightComp = 0;
     for (int i = 1;i < sz; i++)
     {
         if (i2 < sz - polDeg * 2 && i > polDeg)
@@ -133,7 +135,9 @@ SuperInt GetFuncRes(SuperInt x, SuperInt tolerance, int polDeg)
             i2++;
         }
 
-        if (x > coefs[i - 1] && coefs[i] > x)
+        leftComp = x.Compare(coefs[i - 1]);
+        rightComp = x.Compare(coefs[i]);
+        if (leftComp <=0 && rightComp >=0)
         {
             for (int j = 0; j < polDeg * 2;j++)
             {
@@ -167,41 +171,38 @@ void InitCoefs()
     coefs.push_back(SuperInt({ 0,1,0,1,1,0,0,1,0,1,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,1,1,0,1,0,0,1,0,1,0,0,0,1,0,1,0,1,1,0,0,0,0,1,1,1,0,1,1,0,0,1,1,0,1,1,1,0,0,0,0,1,1,0,0,1,0 }));
     coefs.push_back(SuperInt({ 0,0,1,0,1,0,1,0,0,0,0,1,0,1,0,0,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,0,0,1,0,1,0,0,1,0,1,1,1,1,1,0,0,1,0,0,1,0,0,1,0,0,0,0,1,1,1,0,1,1,0,1,1,1,0,0,0,1,1,1,0,1,0 }));
     coefs.push_back(SuperInt({ 0,0,0,1,1,1,0,1,1,1,1,0,0,1,1,1,0,1,1,0,1,0,1,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,1,0,1,1,1,0,0,1,1,1,1,0,1,0,1,0,0,1,1,0,0,1,0 }));
+    coefs.push_back(SuperInt({ 0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,0,1,0,1,0,0,1,1,0,0,0,1,0,0,1,0,1,1,0,0,1,1,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,0,0,1,1,0,1,1,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0,1,0 }));
+    coefs.push_back(SuperInt({ 0,1,0,1,0,0,0,1,0,0,1,0,1,1,1,1,1,1,0,1,0,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,1,0,1,1,0,0,1,1,0,0,1,1,0,0,0,1,1,1,0,1,1,1,1,1,1,0,1,1,0,0,1,0,1,0,0,1,0,0,1,1,1,0 }));
+    coefs.push_back(SuperInt({ 1,0,1,1,0,1,1,0,0,0,0,0,1,0,0,0,0,1,0,1,0,1,1,1,1,0,0,1,0,1,0,1,0,0,0,0,0,0,1,1,0,0,1,1,0,1,0,1,0,0,0,0,0,0,1,0,0,0,1,1,0,1,0,0,0,1,1,1,0,1,0,0,0,1,0,1,0,0,0,1,0,1,1,0 }));
+    coefs.push_back(SuperInt({ 0,0,1,1,1,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,0,0,1,1,1,1,1,1,0,0,1,0,1,1,1,0,0,0,1,0,1,1,0,0,1,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1,0,1,1,0 }));
+    coefs.push_back(SuperInt({ 0,0,1,0,0,1,0,1,1,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1,0,0,1,0,1,1,0,0,1,0,0,1,1,0,0,1,0,0,1,0,1,1,0,1,0,1,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1,1,0,0,1,1,0,1,0,1,1,1,0,0,1,0 }));
+    coefs.push_back(SuperInt({ 0,0,1,0,0,0,0,0,1,0,1,0,0,1,1,1,1,0,0,0,0,1,1,1,0,1,0,1,0,0,1,0,1,1,1,1,0,1,1,0,1,1,0,1,0,0,1,1,1,0,1,1,1,1,0,0,1,1,1,0,0,0,1,0,1,0,1,0,0,1,0 }));
 
     std::sort(coefs.begin(), coefs.end());
 }
 int main(int argc, char** argv)
 {
-    
+    SuperInt threshold(vector<bool>(60,1));
+
     SuperInt toCheck1 = GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
-    SuperInt toCheck2 = GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim2.bmp");
-    SuperInt tol({0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,1});
+    //SuperInt toCheck2 = GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim2.bmp");
+    SuperInt tol(vector<bool>(350, 1));
 
     InitCoefs();
 
     
-    SuperInt res1 = GetFuncRes(toCheck1,tol,2);
-    SuperInt res2 = GetFuncRes(toCheck2, tol, 2);
+    SuperInt res1 = GetFuncRes(toCheck1,tol,3);
+    //SuperInt res2 = GetFuncRes(toCheck2, tol, 2);
+
+
+    if (threshold > res1)
+    {
+        cout << "res1 is 2";
+        cout << endl;
+    }
 
     res1.PrintBinary();
-    cout << endl << endl;
-    res2.PrintBinary();
+    cout << endl;
+    //toCheck1.PrintBinaryEx();
 
 }

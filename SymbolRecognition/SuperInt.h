@@ -423,6 +423,7 @@ public:
 					}
 					b.IntBits.erase(b.IntBits.begin());
 					b.biggestPos--;
+					b.size--;
 					i++;
 				}
 			}
