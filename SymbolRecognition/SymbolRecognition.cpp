@@ -9,7 +9,7 @@
 #include "SuperInt.h"
 
 using namespace std;
-vector<float> coefs;
+vector<SuperInt> coefs;
 
 
 
@@ -43,7 +43,7 @@ SuperInt EvalNestedSeriesSumm(int value, int nestLevel)
 }
 
 
-vector<bool> img = { 1,1,0,0,0,0,0,0};
+vector<bool> imgVec;
 
 SuperInt GetImageNum(const vector<bool>& img)
 {
@@ -55,7 +55,7 @@ SuperInt GetImageNum(const vector<bool>& img)
         unitsNum += unit;
     }
 
-    if (unitsNum < img.size() / 2)
+    if (unitsNum <= img.size() / 2)
     {
         int nestLev = 0;
 
@@ -89,49 +89,41 @@ SuperInt GetImageNum(const vector<bool>& img)
             }
 
         }
-        res.PrintDecimal();
-        cout << endl;
     }
     return res;
 }
 
-float getSum()
-{
-   
-    return 0;
-}
 
 
-float GetImgCode(std::string path)
+
+SuperInt GetImgCode(std::string path)
 {
+    imgVec.clear();
     Image img(path);
     RGB rgb(0, 0, 0);
     int el = 0;
-    for (int x = 0;x < 18;x++)
-        for (int y = 0;y < 18;y++)
+    for (int x = 0;x < 10;x++)
+        for (int y = 0;y < 10;y++)
         {
             rgb = img.GetPixel(x, y);
             if (rgb.G == 0)
             {
-                /*Vect vect;
-                vect.x = x;
-                vect.y = y;
-
-                vec.push_back(vect);*/
+                imgVec.push_back(1);
             }
             else
             {
+                imgVec.push_back(0);
             }
         }
 
     //cout << getSum() << endl;
-    return getSum();
+    return GetImageNum(imgVec);
 }
 
-float GetFuncRes(float x, float tolerance, int polDeg)
+SuperInt GetFuncRes(SuperInt x, SuperInt tolerance, int polDeg)
 {
 
-    float res = 1;
+    SuperInt res(2,1);
     int sz = coefs.size();
     int i2 = 0;
     for (int i = 1;i < sz; i++)
@@ -141,11 +133,11 @@ float GetFuncRes(float x, float tolerance, int polDeg)
             i2++;
         }
 
-        if (x > coefs[i - 1] && x < coefs[i])
+        if (x > coefs[i - 1] && coefs[i] > x)
         {
             for (int j = 0; j < polDeg * 2;j++)
             {
-                res *= (x - coefs[i2 + j]) * tolerance;
+                res =  res.Mult(x.Diff( coefs[i2 + j]).Mult( tolerance));
             }
             break;
         }
@@ -156,5 +148,19 @@ float GetFuncRes(float x, float tolerance, int polDeg)
 
 int main(int argc, char** argv)
 {
-    GetImageNum(img);
+    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+
+
+
+    
 }

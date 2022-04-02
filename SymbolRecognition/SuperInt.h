@@ -24,6 +24,23 @@ public:
 		}
 	}
 
+	SuperInt(const std::vector<bool> &number)
+	{
+		size = number.size();
+		for (int i = size-1; i >=0;i++)
+		{
+			if (number[i])
+			{
+				biggestPos = i;
+				break;
+			}
+		}
+
+		IntBits = number;
+
+
+	}
+
 	SuperInt Sum(const SuperInt& b)
 	{
 		
