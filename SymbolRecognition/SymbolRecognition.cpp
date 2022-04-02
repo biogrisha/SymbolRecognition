@@ -122,7 +122,7 @@ SuperInt GetImgCode(std::string path)
 
 SuperInt GetFuncRes(SuperInt x, SuperInt tolerance, int polDeg)
 {
-
+    bool isModified = false;
     SuperInt res(2,1);
     int sz = coefs.size();
     int i2 = 0;
@@ -137,30 +137,71 @@ SuperInt GetFuncRes(SuperInt x, SuperInt tolerance, int polDeg)
         {
             for (int j = 0; j < polDeg * 2;j++)
             {
-                res =  res.Mult(x.Diff( coefs[i2 + j]).Mult( tolerance));
+                res =  res.Mult(x.Diff( coefs[i2 + j]));
+                isModified = true;
             }
             break;
         }
     }
+
+    if (isModified)
+    {
+        res = res.Div(tolerance);
+    }
+    else
+    {
+        res = tolerance;
+    }
     return res;
 }
 
+void InitCoefs()
+{
+    coefs.push_back(SuperInt({ 0,0,1,1,0,1,0,0,0,1,1,1,1,0,0,1,0,0,1,0,1,1,0,0,0,1,1,0,1,0,1,1,1,1,1,1,1,1,0,1,1,1,0,0,1,1,0,1,1,0,1,0,0,0,0,1,0,1,0,0,1,0,1,1,1,0,0,0,0,0,1,0,1,1,0,1,1,1,0 }));
+    coefs.push_back(SuperInt({ 0,0,1,1,1,0,1,0,0,0,0,0,1,0,1,1,0,0,1,1,1,1,0,0,1,1,1,0,0,1,0,1,1,1,1,0,1,0,0,1,0,0,1,0,1,1,1,0,0,1,0,1,1,0,1,0,0,1,1,0,1,0,0,0,0,1,0,0,1,0,1,1,0,1,1,1,0,1,1,0,0,1,0 }));
+    coefs.push_back(SuperInt({ 0,1,1,0,0,0,1,1,0,1,0,1,1,1,1,0,0,1,1,1,0,0,0,1,1,0,0,1,0,0,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,0,1,1,0,0,1,1,0,0,0,1,1,1,1,0,1,1,0,1,0,1,0,1,0,0,1,0,0,0,0,1,1,0 }));
+    coefs.push_back(SuperInt({ 1,1,0,1,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,1,1,1,1,0,0,1,0,0,1,1,1,1,1,1,1,1,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,1,0,1,1,0,0,1,1,0,0,0,1,1,0,0,1,0 }));
+    coefs.push_back(SuperInt({ 0,0,1,1,1,1,1,0,0,0,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,1,1,0,1,1,1,1,0,1,0,1,1,0,0,1,1,0,0,0,1,0,0,1,0,1,1,1,1,0,0,0,1,1,0,0,1,0 }));
+    coefs.push_back(SuperInt({ 0,1,1,1,1,1,0,0,1,0,1,1,0,0,0,0,0,0,1,1,0,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,1,0,1,0,0,1,0,0,1,0,1,1,1,1,0,0,0,1,1,0,1,0,0,1,1,0,1,0,0,1,0,0,1,1,0,1,1,1,0 }));
+    coefs.push_back(SuperInt({ 0,0,1,1,0,1,1,0,0,0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,1,1,1,1,0,1,0,1,0,0,0,0,0,1,0,1,0,1,1,0,1,1,0,1,0,1,1,1,0,0,1,1,1,1,1,0,1,1,1,0,1,1,0,0,0,1,0,0,0,0,1,1,0 }));
+    coefs.push_back(SuperInt({ 0,1,0,1,1,0,0,1,0,1,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,1,1,0,1,0,0,1,0,1,0,0,0,1,0,1,0,1,1,0,0,0,0,1,1,1,0,1,1,0,0,1,1,0,1,1,1,0,0,0,0,1,1,0,0,1,0 }));
+    coefs.push_back(SuperInt({ 0,0,1,0,1,0,1,0,0,0,0,1,0,1,0,0,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,0,0,1,0,1,0,0,1,0,1,1,1,1,1,0,0,1,0,0,1,0,0,1,0,0,0,0,1,1,1,0,1,1,0,1,1,1,0,0,0,1,1,1,0,1,0 }));
+    coefs.push_back(SuperInt({ 0,0,0,1,1,1,0,1,1,1,1,0,0,1,1,1,0,1,1,0,1,0,1,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,1,1,0,1,1,1,0,0,1,1,1,1,0,1,0,1,0,0,1,1,0,0,1,0 }));
 
+    std::sort(coefs.begin(), coefs.end());
+}
 int main(int argc, char** argv)
 {
-    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
-    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
-    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
-    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
-    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
-    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
-    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
-    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
-    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
-    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
-    GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    
+    SuperInt toCheck1 = GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim1.bmp");
+    SuperInt toCheck2 = GetImgCode("C:/CPPDEV/Projects/SymbolRecognition/SymbolRecognition/fim2.bmp");
+    SuperInt tol({0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,1});
 
-
+    InitCoefs();
 
     
+    SuperInt res1 = GetFuncRes(toCheck1,tol,2);
+    SuperInt res2 = GetFuncRes(toCheck2, tol, 2);
+
+    res1.PrintBinary();
+    cout << endl << endl;
+    res2.PrintBinary();
+
 }

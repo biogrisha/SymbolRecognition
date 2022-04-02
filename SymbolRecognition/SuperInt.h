@@ -27,7 +27,7 @@ public:
 	SuperInt(const std::vector<bool> &number)
 	{
 		size = number.size();
-		for (int i = size-1; i >=0;i++)
+		for (int i = size-1; i >=0;i--)
 		{
 			if (number[i])
 			{
@@ -434,7 +434,7 @@ public:
 		return ret;
 	}
 
-	int Compare(const SuperInt& b)
+	int Compare(const SuperInt& b)const
 	{
 		int res = 0;
 		if (b.biggestPos > biggestPos)
@@ -478,6 +478,17 @@ public:
 		}
 	}
 
+	void PrintBinaryEx()
+	{
+		for (int i = 0; i < IntBits.size();i++)
+		{
+			if (IntBits[i])
+				std::cout << "1,";
+			else
+				std::cout << "0,";
+		}
+	}
+
 	void PrintDecimal()
 	{
 		int sum = 0;
@@ -493,7 +504,7 @@ public:
 	}
 
 
-	bool operator>(const SuperInt& b)
+	bool operator>(const SuperInt& b)const
 	{
 		bool res = false;
 		int compRes = Compare(b);
@@ -510,6 +521,26 @@ public:
 		}
 		return res;
 	}
+	
+	bool operator<(const SuperInt& b)const
+	{
+		bool res = false;
+		int compRes = Compare(b);
+		switch (compRes)
+		{
+		case 1:
+			res = true;
+			break;
+		case -1:
+			res = false;
+			break;
+		default:
+			break;
+		}
+		return res;
+	}
+	
+
 private:
 	std::vector<bool> IntBits;
 	int size;
